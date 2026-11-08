@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f6f62">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} [hidden]{display:none!important}</style>
+<title>Steady Ground</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one calm column; today's four practices as stacked panels, a history log at the end */
+:root{
+  --bg:#eef1ee; --surface:#f8faf8; --ink:#1f2a27; --muted:#5d6b66; --line:#d3dbd7;
+  --accent:#2f6f62; --accent-soft:#d6e7e2; --warm:#b86a2c;
+  --display:"Young Serif",Georgia,serif; --body:"Karla",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141a19; --surface:#1b2321; --ink:#e3ebe8; --muted:#94a39e; --line:#2c3735;
+  --accent:#6fb7a6; --accent-soft:#223532; --warm:#e0a066; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a19; --surface:#1b2321; --ink:#e3ebe8; --muted:#94a39e; --line:#2c3735;
+  --accent:#6fb7a6; --accent-soft:#223532; --warm:#e0a066; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1{font-family:var(--display);font-weight:400;font-size:2.4rem;line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;font-size:1.45rem;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:8px 0 0;max-width:60ch}
+.label{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.today{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.85rem;display:flex;gap:6px;align-items:center;background:var(--surface)}
+.chip.done{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.chip .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--muted)}
+.chip.done .dot{background:var(--accent);border-color:var(--accent)}
+.streak{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-top:10px}
+section.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.num{font-family:var(--mono);color:var(--accent);font-size:.85rem}
+.why{color:var(--muted);margin:0;font-size:.95rem}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:500;font-size:.95rem}
+textarea,input[type=text]{width:100%;font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;resize:vertical}
+textarea{min-height:76px}
+textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.scale{display:flex;flex-direction:column;gap:6px;font-weight:500;font-size:.95rem}
+.scale .row{display:flex;gap:10px;align-items:center}
+input[type=range]{flex:1;accent-color:var(--accent)}
+.scale output{font-family:var(--mono);min-width:3ch;text-align:right;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-weight:700;font-size:.9rem;border-radius:8px;padding:10px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--surface)}
+button.ghost{background:transparent;color:var(--accent)}
+.saved{font-size:.85rem;color:var(--accent)}
+.breath{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.orb-box{width:150px;height:150px;display:grid;place-items:center;flex:none}
+.orb{width:60px;height:60px;border-radius:50%;background:var(--accent-soft);border:2px solid var(--accent);transition:transform 4s ease-in-out}
+.cue{display:flex;flex-direction:column;gap:4px;min-width:0}
+.cue strong{font-family:var(--display);font-weight:400;font-size:1.5rem}
+.cue span{font-family:var(--mono);color:var(--muted);font-size:.85rem}
+.body-chips{display:flex;flex-wrap:wrap;gap:8px}
+.body-chips button{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500;padding:6px 12px;border-radius:999px}
+.body-chips button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent)}
+.history{display:flex;flex-direction:column;gap:10px}
+.entry{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.entry .meta{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.entry .kind{color:var(--warm)}
+.entry p{margin:0;font-size:.92rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.empty{color:var(--muted);font-size:.92rem}
+.note{font-size:.82rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.orb{transition:none}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="label">Daily practice</div>
+    <h1>Steady Ground</h1>
+    <p class="lede">Your four action items from therapy, one page a day. The aim is trusting yourself again: noticing anxiety, staying with it, and grounding your worth in things you know are true.</p>
+    <div class="today" id="today"></div>
+    <div class="streak" id="streak"></div>
+  </header>
+
+  <!-- 1 -->
+  <section class="panel" id="p-breathe">
+    <div class="head"><h2>Regulate</h2><span class="num">1 · recognise, then breathe</span></div>
+    <p class="why">Name the anxiety first. A longer exhale than inhale tells your nervous system it is safe.</p>
+    <div class="f"><span class="label">Where do you feel it?</span>
+      <div class="body-chips" id="bodyChips"></div></div>
+    <div class="scale"><span>Anxiety now</span><div class="row"><input type="range" id="b-before" min="0" max="10" value="5"><output id="b-before-o">5</output></div></div>
+    <div class="breath">
+      <div class="orb-box"><div class="orb" id="orb"></div></div>
+      <div class="cue"><strong id="cue">Ready</strong><span id="cueSub">Inhale 4 · hold 4 · exhale 6 · 6 rounds</span></div>
+    </div>
+    <div class="btns"><button id="breatheBtn">Start breathing</button></div>
+    <div class="scale"><span>Anxiety after</span><div class="row"><input type="range" id="b-after" min="0" max="10" value="3"><output id="b-after-o">3</output></div></div>
+    <div class="btns"><button class="ghost" id="saveBreathe">Log this</button><span class="saved" id="s-breathe"></span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="panel" id="p-expose">
+    <div class="head"><h2>Face it</h2><span class="num">2 · exposure, no avoiding</span></div>
+    <p class="why">Pick something that makes you a little anxious and stay with it without checking, asking or escaping. The urge peaks and fades.</p>
+    <label class="f">What did you face?<textarea id="e-what" placeholder="e.g. Didn't check my phone for 2 hours after sending a message"></textarea></label>
+    <div class="grid2">
+      <div class="scale"><span>Peak anxiety</span><div class="row"><input type="range" id="e-peak" min="0" max="10" value="6"><output id="e-peak-o">6</output></div></div>
+      <div class="scale"><span>At the end</span><div class="row"><input type="range" id="e-end" min="0" max="10" value="3"><output id="e-end-o">3</output></div></div>
+    </div>
+    <label class="f">What actually happened?<textarea id="e-learn" placeholder="e.g. Nothing bad. She replied later and was normal."></textarea></label>
+    <div class="btns"><button class="ghost" id="saveExpose">Log this</button><span class="saved" id="s-expose"></span></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="panel" id="p-journal">
+    <div class="head"><h2>Validate yourself</h2><span class="num">3 · self-esteem journal</span></div>
+    <label class="f">What I want to validate myself for is:<textarea id="j-what" placeholder="e.g. Apologising quickly when I misread her message"></textarea></label>
+    <label class="f">It is important because:<textarea id="j-why" placeholder="Anchor it intellectually"></textarea></label>
+    <label class="f">How it makes me feel is:<textarea id="j-feel" placeholder="Attach a feeling to it"></textarea></label>
+    <div class="btns"><button class="ghost" id="saveJournal">Log this</button><span class="saved" id="s-journal"></span></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="panel" id="p-worth">
+    <div class="head"><h2>Hold your own worth</h2><span class="num">4 · detach from validation</span></div>
+    <p class="why">Notice where you looked to someone else for reassurance, then give that reassurance to yourself.</p>
+    <label class="f">Where did I want someone's validation today?<textarea id="w-where" placeholder="e.g. Waiting for a reply and reading the silence as a verdict"></textarea></label>
+    <label class="f">What is true about me regardless of their response?<textarea id="w-true" placeholder="e.g. I'm a loyal friend who owns my mistakes. That doesn't depend on a text."></textarea></label>
+    <div class="btns"><button class="ghost" id="saveWorth">Log this</button><span class="saved" id="s-worth"></span></div>
+  </section>
+
+  <section class="panel">
+    <div class="head"><h2>Your log</h2><span class="num" id="count"></span></div>
+    <div class="history" id="history"></div>
+    <div class="btns"><button class="ghost" id="copyAll">Copy log for therapy</button><span class="saved" id="s-copy"></span></div>
+    <p class="note">Entries are saved in this browser on this device only.</p>
+  </section>
+</div>
+
+<script>
+const KEY='steady-ground-v1';
+let log=[];
+try{log=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){log=[]}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(log))}catch(e){}};
+const $=id=>document.getElementById(id);
+const dayKey=d=>{const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+const today=()=>dayKey(Date.now());
+const KINDS={breathe:'Regulate',expose:'Exposure',journal:'Self-validation',worth:'Own worth'};
+
+['b-before','b-after','e-peak','e-end'].forEach(id=>{const r=$(id),o=$(id+'-o');r.addEventListener('input',()=>o.textContent=r.value)});
+
+const parts=['Chest','Stomach','Throat','Shoulders','Jaw','Racing thoughts','Restless'];
+const chosen=new Set();
+parts.forEach(p=>{const b=document.createElement('button');b.type='button';b.textContent=p;b.setAttribute('aria-pressed','false');
+  b.onclick=()=>{chosen.has(p)?chosen.delete(p):chosen.add(p);b.setAttribute('aria-pressed',chosen.has(p))};$('bodyChips').appendChild(b)});
+
+// breathing
+const phases=[['Breathe in',4,1.9],['Hold',4,1.9],['Breathe out',6,1]];
+let timer=null;
+function stopBreath(msg){clearTimeout(timer);timer=null;$('orb').style.transitionDuration='1s';$('orb').style.transform='scale(1)';$('cue').textContent=msg||'Ready';$('breatheBtn').textContent='Start breathing';$('cueSub').textContent='Inhale 4 · hold 4 · exhale 6 · 6 rounds'}
+$('breatheBtn').onclick=()=>{
+  if(timer){stopBreath();return}
+  $('breatheBtn').textContent='Stop';let round=1,i=0;
+  const step=()=>{if(round>6){stopBreath('Done. Notice how you feel.');return}
+    const [name,secs,scale]=phases[i];$('cue').textContent=name;$('cueSub').textContent='Round '+round+' of 6 · '+secs+'s';
+    $('orb').style.transitionDuration=secs+'s';$('orb').style.transform='scale('+scale+')';
+    timer=setTimeout(()=>{i++;if(i===phases.length){i=0;round++}step()},secs*1000)};
+  step()};
+
+function add(kind,data,flash){log.unshift({kind,t:Date.now(),...data});persist();render();$(flash).textContent='Saved';setTimeout(()=>$(flash).textContent='',2000)}
+function need(ids,flash){if(ids.some(id=>!$(id).value.trim())){$(flash).textContent='Fill in each prompt first';return false}return true}
+$('saveBreathe').onclick=()=>add('breathe',{before:+$('b-before').value,after:+$('b-after').value,where:[...chosen].join(', ')},'s-breathe');
+$('saveExpose').onclick=()=>{if(!need(['e-what'],'s-expose'))return;add('expose',{what:$('e-what').value.trim(),peak:+$('e-peak').value,end:+$('e-end').value,learn:$('e-learn').value.trim()},'s-expose');$('e-what').value=$('e-learn').value=''};
+$('saveJournal').onclick=()=>{if(!need(['j-what','j-why','j-feel'],'s-journal'))return;add('journal',{what:$('j-what').value.trim(),why:$('j-why').value.trim(),feel:$('j-feel').value.trim()},'s-journal');['j-what','j-why','j-feel'].forEach(id=>$(id).value='')};
+$('saveWorth').onclick=()=>{if(!need(['w-where','w-true'],'s-worth'))return;add('worth',{where:$('w-where').value.trim(),truth:$('w-true').value.trim()},'s-worth');['w-where','w-true'].forEach(id=>$(id).value='')};
+
+function text(e){
+  if(e.kind==='breathe')return 'Anxiety '+e.before+' → '+e.after+(e.where?' · felt in: '+e.where:'');
+  if(e.kind==='expose')return e.what+'\nPeak '+e.peak+' → end '+e.end+(e.learn?'\nWhat happened: '+e.learn:'');
+  if(e.kind==='journal')return 'Validating: '+e.what+'\nImportant because: '+e.why+'\nFeels: '+e.feel;
+  return 'Wanted validation: '+e.where+'\nTrue regardless: '+e.truth;
+}
+function streak(){const days=new Set(log.map(e=>dayKey(e.t)));let n=0,d=new Date();if(!days.has(today()))d.setDate(d.getDate()-1);while(days.has(dayKey(d))){n++;d.setDate(d.getDate()-1)}return n}
+function render(){
+  const doneToday=new Set(log.filter(e=>dayKey(e.t)===today()).map(e=>e.kind));
+  $('today').innerHTML='';Object.entries(KINDS).forEach(([k,v])=>{const c=document.createElement('span');c.className='chip'+(doneToday.has(k)?' done':'');c.innerHTML='<span class="dot"></span>';c.append(v);$('today').appendChild(c)});
+  const s=streak();$('streak').textContent=s?s+' day'+(s>1?'s':'')+' in a row with at least one practice':'Log any practice to start a streak';
+  $('count').textContent=log.length+' entr'+(log.length===1?'y':'ies');
+  const h=$('history');h.innerHTML='';
+  if(!log.length){h.innerHTML='<p class="empty">Nothing logged yet. Each practice you log appears here with its date, so you can bring the pattern to your next session.</p>';return}
+  log.slice(0,30).forEach(e=>{const d=document.createElement('div');d.className='entry';
+    const m=document.createElement('div');m.className='meta';const k=document.createElement('span');k.className='kind';k.textContent=KINDS[e.kind];
+    const t=document.createElement('span');t.textContent=new Date(e.t).toLocaleString(undefined,{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+    m.append(k,t);const p=document.createElement('p');p.textContent=text(e);d.append(m,p);h.appendChild(d)});
+}
+$('copyAll').onclick=()=>{const out=log.map(e=>'['+new Date(e.t).toLocaleDateString()+'] '+KINDS[e.kind]+'\n'+text(e)).join('\n\n')||'No entries yet.';
+  const ok=()=>{$('s-copy').textContent='Copied';setTimeout(()=>$('s-copy').textContent='',2000)};
+  try{navigator.clipboard.writeText(out).then(ok,()=>{$('s-copy').textContent='Copy not allowed here'})}catch(e){$('s-copy').textContent='Copy not allowed here'}};
+render();
+</script>
+
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
